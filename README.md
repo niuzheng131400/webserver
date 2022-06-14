@@ -1,13 +1,11 @@
 #### 结构简介
 ```text
-.
 ├── code
 │   └── index.php
 ├── conf
 │   └── nginx.conf
 ├── docker-compose.yml
 ├── install
-│   ├── init.sh
 │   └── install-php-extensions
 ├── logs
 └── README.md
