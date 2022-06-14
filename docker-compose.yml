@@ -9,7 +9,8 @@ services:
     volumes:
       - ./code:/var/www/html
       - ./conf/nginx/:/etc/nginx/conf.d
-      - ./logs:/var/log
+      - ./logs/nginx:/var/log/nginx
+      - ./logs/php:/var/log/php
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:80" ]
       interval: 30s
