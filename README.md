@@ -1,21 +1,16 @@
 #### 结构简介
 ```text
+.
 ├── code
 │   └── index.php
 ├── conf
 │   └── nginx.conf
+├── docker-compose.yml
 ├── install
+│   ├── init.sh
 │   └── install-php-extensions
 ├── logs
-│   ├── nginx
-│   │   ├── access.log
-│   │   ├── error.log
-│   │   ├── www.test.com_access.log
-│   │   └── www.test.com_error.log
-│   └── php
-│       └── php_errors.log
-├── REAMME.md
-└── web.Dockerfile
+└── README.md
 ```
 #### 构建镜像
 ```text
