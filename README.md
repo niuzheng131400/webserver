@@ -18,5 +18,5 @@ docker build -t web:1.0 -f web.Dockerfile .
 ```
 #### 运行容器
 ```text
-docker run --name web -d -p 80:80 -v $PWD/code:/var/www/html -v $PWD/conf:/etc/nginx/conf.d -v $PWD/logs/php:/var/log -v $PWD/logs/nginx:/var/log web:1.0
+docker run --name web -d -p 80:80 -v $PWD/code:/var/www/html -v $PWD/conf:/etc/nginx/conf.d -v $PWD/logs/php:/var/log/php -v $PWD/logs/nginx:/var/log/nginx web:1.0
 ```
