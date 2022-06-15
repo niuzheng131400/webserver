@@ -38,3 +38,7 @@ Environment="BUILDKIT_STEP_LOG_MAX_SPEED=10240000"
 systemctl daemon-reload
 systemctl restart docker.service
 ```
+#### 运行 
+```text
+http://192.168.56.2:80/
+```
