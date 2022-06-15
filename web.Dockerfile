@@ -8,11 +8,8 @@ RUN sed -i "s#http://deb.debian.org#http://mirrors.aliyun.com#g" /etc/apt/source
     rm -rf /var/lib/apt/lists/* && \
     chmod +x /usr/local/bin/install-php-extensions && \
     apt-get update && \
-    apt-get install -y cron curl telnet git zlib1g-dev nginx supervisor  libzip-dev unzip procps sudo vim && \
+    apt-get install -y cron curl telnet inetutils-ping git zlib1g-dev nginx supervisor  libzip-dev unzip procps sudo vim && \
     /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' > /etc/timezone && \
-#    php -r "copy('https://install.phpcomposer.com/installer', 'composer-setup.php');" && \
-#    php composer-setup.php --install-dir=/usr/local/bin --filename=composer && \
-#    php -r "unlink('composer-setup.php');" && \
     apt-get clean && rm -rf /var/cache/apt/* && \
     install-php-extensions gd xdebug zip pdo_mysql opcache mysqli bcmath redis mongodb swoole @composer && \
     unlink /etc/nginx/sites-enabled/default && \

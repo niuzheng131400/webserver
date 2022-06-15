@@ -10,4 +10,4 @@ CREATE TABLE IF NOT EXISTS `runoob_tbl` (
     PRIMARY KEY(`runoob_id`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO runoob_tbl (runoob_title,runoob_author, submission_date) VALUES  ('学习 PHP','php.net','2022-06-12');
+INSERT INTO runoob_tbl (runoob_title,runoob_author, submission_date) VALUES  ('学习PHP','php.net','2022-06-12');

@@ -17,7 +17,7 @@ services:
       retries: 3
       start_period: 40s
     depends_on:
-      - mysql
+      - mysql-server
       - redis-server
     networks:
       - backend
@@ -32,11 +32,13 @@ services:
       interval: 1s
       timeout: 3s
       retries: 30
+    volumes:
+      - ./redis-conf:/usr/local/etc/redis
     networks:
       - backend
     depends_on:
-      - mysql
-  mysql:
+      - mysql-server
+  mysql-server:
     image: mysql:5.7
     ports:
       - '3306:3306'
@@ -66,7 +68,7 @@ services:
       image: adminer:latest
       restart: always
       depends_on:
-        - mysql
+        - mysql-server
       healthcheck:
         test: [ "CMD", "curl", "-f", "http://localhost:8080" ]
         interval: 30s
