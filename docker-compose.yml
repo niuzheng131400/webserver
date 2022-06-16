@@ -26,7 +26,7 @@ services:
       - '80:80'
   redis-server:
     image: redis:latest
-    command: redis-server --requirepass ${REDIS_PASSWORD}
+    command: redis-server /usr/local/etc/redis/redis.conf
     healthcheck:
       test: [ "CMD", "redis-cli", "ping" ]
       interval: 1s
