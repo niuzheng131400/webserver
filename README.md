@@ -1,3 +1,10 @@
+### 概述
+#### 阿里云的国内源加速
+#### 安装了一些工具
+- cron、curl、inetutils-ping、telnet、git、zlib1g-dev、nginx、supervisor、libzip-dev、unzip、procps、sudo、vim
+#### 安装了一些常用的PHP扩展
+- composer、gd、xdebug、zip、pdo_mysql、opcache、mysqli、bcmath、redis、mongodb、swoole
+#### 安装了supervisor守护进程,保证进程安全运行
 #### 结构简介
 ```text
 ├── code
