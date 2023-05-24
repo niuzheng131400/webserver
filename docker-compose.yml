@@ -70,7 +70,7 @@ services:
       depends_on:
         - mysql-server
       healthcheck:
-        test: [ "CMD", "curl", "-f", "http://localhost:8080" ]
+        test: [ "CMD", "php", "-r", "file_get_contents('http://localhost:8080');" ]
         interval: 30s
         timeout: 3s
         retries: 3
