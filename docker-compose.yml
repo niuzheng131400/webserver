@@ -1,15 +1,18 @@
 version: "3.8"
-
 services:
-  web:
+  web-server:
     build:
       context: .
-      dockerfile: web.Dockerfile
+      dockerfile: Dockerfile
     volumes:
-      - ./code:/var/www/html
-      - ./nginx-conf:/etc/nginx/conf.d
+      - ./project:/var/www/html
+      - ./nginx:/etc/nginx/conf.d
+      - ./php:/usr/local/etc/php/conf.d
+      - ./php-fpm:/usr/local/etc/php-fpm.d
+      - ./supervisor:/etc/supervisor/conf.d
       - ./logs/nginx:/var/log/nginx
       - ./logs/php:/var/log/php
+      - ./logs/supervisor/:/var/log/supervisor
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:80" ]
       interval: 2s
@@ -33,7 +36,7 @@ services:
       timeout: 3s
       retries: 30
     volumes:
-      - ./redis-conf:/usr/local/etc/redis
+      - ./redis:/usr/local/etc/redis
     networks:
       - backend
     depends_on:
@@ -49,8 +52,10 @@ services:
       timeout: 3s
       retries: 30
     volumes:
-      - ./mysql-data:/var/lib/mysql
-      - ./init-database:/docker-entrypoint-initdb.d
+      - ./mysql/init:/docker-entrypoint-initdb.d
+      - ./mysql/data:/var/lib/mysql
+      - ./logs/mysql:/data/mysql/logs
+      - ./mysql/conf:/etc/mysql/conf.d
     command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
@@ -64,26 +69,26 @@ services:
       - mysql_db_root
     networks:
       - backend
-  adminer:
-      image: adminer:latest
-      restart: always
-      depends_on:
-        - mysql-server
-      healthcheck:
-        test: [ "CMD", "php", "-r", "file_get_contents('http://localhost:8080');" ]
-        interval: 30s
-        timeout: 3s
-        retries: 3
-        start_period: 40s
-      environment:
-        ADMINER_DEFAULT_SERVER: mysql
-      ports:
-        - '8080:8080'
-      networks:
-        - backend
+  adminer-server:
+    image: adminer:latest
+    restart: always
+    depends_on:
+      - mysql-server
+    healthcheck:
+      test: [ "CMD", "php", "-r", "echo file_get_contents('http://localhost:8080');" ]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 40s
+    environment:
+      ADMINER_DEFAULT_SERVER: mysql
+    ports:
+      - '8089:8080'
+    networks:
+      - backend
 networks:
   backend:
   frontend:
 secrets:
   mysql_db_root:
-    file: ./mysqlroot.txt
+    file: ./mysql/mysqlroot.txt
