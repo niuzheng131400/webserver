@@ -1,3 +1,7 @@
+##  [项目源码地址](https://github.com/niuzheng131400/webserver)
+##  [博客文章地址](https://niuzheng.net/archives/3114/)
+
+
 ### 概述
 #### 阿里云的国内源加速
 #### 安装了一些工具
@@ -31,7 +35,7 @@
 │      ├── test
 │      └── ssl
 ├── redis
-│      └── redis.conf            
+│      └── redis.conf
 └── supervisor
     └── web.conf
 ```
@@ -43,6 +47,15 @@
 - php-fpm     php-fpm配置文件
 - redis       redis配置文件
 - supervisor  supervisor守护进程配置文件
+
+
+
+#### 使用
+
+```shell
+git clone https://github.com/niuzheng131400/webserver.git
+cd webserver
+```
 
 #### 设置端口以及防火墙以及安全组等
 ```shell
@@ -96,7 +109,3 @@ docker-compose exec acme.sh sh -c 'acme.sh --install-cert -d 域名 --key-file  
 ```
 
 #### 测试访问https(略)
-
-
-####  [博客文章地址](https://niuzheng.net/archives/3114/)
-
