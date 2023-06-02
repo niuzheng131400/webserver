@@ -4,6 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: web
     volumes:
       - ./project:/var/www/html
       - ./nginx:/etc/nginx/conf.d
@@ -27,8 +28,24 @@ services:
       - frontend
     ports:
       - '80:80'
+      - '443:443'
+  acme.sh:
+    image: neilpang/acme.sh
+    container_name: acme.sh
+    restart: always
+    command: daemon
+    volumes:
+      - ./acmeout:/acme.sh
+      - ./project/ssl:/acme.sh/ssl
+    environment:
+      - Ali_Key=LTAI4LOIJKLiFLhfrzb9
+      - Ali_Secret=jKvIWLHYIKe4UHUW754
+    networks:
+      - backend
+      - frontend
   redis-server:
     image: redis:latest
+    container_name: redis
     command: redis-server /usr/local/etc/redis/redis.conf
     healthcheck:
       test: [ "CMD", "redis-cli", "ping" ]
@@ -43,6 +60,7 @@ services:
       - mysql-server
   mysql-server:
     image: mysql:5.7
+    container_name: mysql
     ports:
       - '3306:3306'
     restart: always
@@ -71,6 +89,7 @@ services:
       - backend
   adminer-server:
     image: adminer:latest
+    container_name: adminer
     restart: always
     depends_on:
       - mysql-server
@@ -83,7 +102,7 @@ services:
     environment:
       ADMINER_DEFAULT_SERVER: mysql
     ports:
-      - '8089:8080'
+      - '8080:8080'
     networks:
       - backend
 networks:

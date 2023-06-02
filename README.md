@@ -1,17 +1,10 @@
 ### 概述
-
 #### 阿里云的国内源加速
-
 #### 安装了一些工具
-
 - cron、curl、inetutils-ping、telnet、git、zlib1g-dev、nginx、supervisor、libzip-dev、unzip、procps、sudo、vim
-
 #### 安装了一些常用的PHP扩展
-
-- composer、gd、xdebug、zip、pdo_mysql、opcache、mysqli、bcmath、redis、mongodb、swoole
-
+- composer、gd、xdebug、zip、pdo_mysql、opcache、mysqli、bcmath、redis、mongodb、swoole(swoole 有一些问题)
 #### 安装了supervisor守护进程,保证进程安全运行
-
 #### 结构简介
 
 ```text
@@ -20,19 +13,14 @@
 ├── logs
 │      ├── mysql
 │      ├── nginx
-│      │      ├── access.log
-│      │      └── error.log
 │      ├── php
 │      └── supervisor
 ├── mysql
 │      ├── conf
-│      │      └── my.cnf
-│      ├── data
-│      │
 │      ├── init
-│      │      └── mysql.sql
 │      └── mysqlroot.txt
 ├── nginx
+│      ├── nginx-443.conf
 │      ├── nginx-443.conf.default
 │      └── nginx-80.conf
 ├── php
@@ -40,45 +28,75 @@
 ├── php-fpm
 │      └── www.conf
 ├── project
-│      └── test
-│          ├── 404.html
-│          └── index.php
-├── README.md
+│      ├── test
+│      └── ssl
 ├── redis
-│      └── redis.conf
-├── ssl
-│      └── getssl.sh
+│      └── redis.conf            
 └── supervisor
     └── web.conf
+```
+
+- logs        mysql日志、nginx日志、php日志、supervisor日志
+- mysql       conf配置文件、init初始化导入数据库以及数据表、mysqlroot.txt为root密码
+- nginx       nginx配置文件
+- php         php配置文件
+- php-fpm     php-fpm配置文件
+- redis       redis配置文件
+- supervisor  supervisor守护进程配置文件
+
+#### 设置端口以及防火墙以及安全组等
+```shell
+# 查看当前开放的端口
+firewall-cmd --zone=public --list-ports
+
+# 开放80端口(http)
+firewall-cmd --zone=public --add-port=80/tcp --permanent
+
+# 开放443端口(ssl)
+firewall-cmd --zone=public --add-port=443/tcp --permanent
+
+# 开放8080端口(adminer)
+firewall-cmd --zone=public --add-port=8080/tcp --permanent
+
+# 更新防火墙规则
+firewall-cmd --reload
+
+# 移除8081端口等
+firewall-cmd --zone=public --remove-port=8081/tcp --permanent
 
 ```
+
+#### 配置SSL申请参数 (我这里使用的是阿里云)
+- 如果不是阿里云的请参考官方文档调整对应的参数 [acme.sh官方文档](https://github.com/acmesh-official/acme.sh/wiki/说明)
+- docker-composer.yml  -> Ali_Key 以及 Ali_Secret
 
 #### 构建镜像 && 运行容器
 
-```text
-docker-compose up -d  --build
-
+```shell
+docker-compose up -d
 ```
 
-#### 注意构建运行遇到这个问题的话 [output clipped, log limit 1MiB reached]
+#### 测试访问http(略)
 
-```text
-# ubuntu 修改日志内存限制
-vim  /etc/systemd/system/multi-user.target.wants/docker.service 
+#### 申请SSL && 自动更新证书
+```shell
+# 测试是否安装成功
+docker-compose exec acme.sh sh -c 'acme.sh -v'
 
-# 添加以下信息 
-[Service]
-Environment="BUILDKIT_STEP_LOG_MAX_SIZE=1073741824"
-Environment="BUILDKIT_STEP_LOG_MAX_SPEED=10240000"
+# 变量是否导入成功
+docker-compose exec acme.sh sh -c 'echo $Ali_Key'
 
-# 重启
-systemctl daemon-reload
-systemctl restart docker.service
+# 开始申请
+docker-compose exec acme.sh sh -c 'acme.sh  --register-account  -m 邮箱 --server zerossl'
+docker-compose exec acme.sh sh -c 'acme.sh --issue -d 域名 --dns  dns_ali --debug'
+docker-compose exec acme.sh sh -c 'acme.sh --install-cert -d 域名 --key-file  /acme.sh/ssl/key.pem  --fullchain-file /acme.sh/ssl/cert.pem'
+
+# 宿主机定时任务
+0 0 * * * docker-compose exec acme.sh --cron
 ```
 
-#### 运行
+#### 测试访问https(略)
 
-```text
-http://192.168.56.2:80/
-```
+
+
 
