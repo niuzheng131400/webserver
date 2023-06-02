@@ -8,6 +8,7 @@
 #### 安装了一些常用的PHP扩展
 - composer、gd、xdebug、zip、pdo_mysql、opcache、mysqli、bcmath、redis、mongodb、swoole(swoole 有一些问题)
 #### 安装了supervisor守护进程,保证进程安全运行
+#### 支持自动更新ssl
 #### 结构简介
 
 ```text
