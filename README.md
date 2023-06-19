@@ -12,32 +12,42 @@
 #### 结构简介
 
 ```text
+├── acmeout
+│   ├── account.conf
+│   ├── ca
+│   ├── http.header
+│   ├── openai.niuzheng.net_ecc
+│   └── ssl
 ├── docker-compose.yml
 ├── Dockerfile
 ├── logs
-│      ├── mysql
-│      ├── nginx
-│      ├── php
-│      └── supervisor
+│   ├── mysql
+│   ├── nginx
+│   ├── php
+│   └── supervisor
 ├── mysql
-│      ├── conf
-│      ├── init
-│      └── mysqlroot.txt
+│   ├── conf
+│   ├── data
+│   ├── init
+│   └── mysqlroot.txt
 ├── nginx
-│      ├── nginx-443.conf
-│      ├── nginx-443.conf.default
-│      └── nginx-80.conf
+│   ├── cert.pem
+│   ├── key.pem
+│   ├── nginx-443.conf
+│   ├── nginx-443.conf.default
+│   └── nginx-80.conf
 ├── php
-│      └── php.ini
+│   └── php.ini
 ├── php-fpm
-│      └── www.conf
+│   └── www.conf
 ├── project
-│      ├── test
-│      └── ssl
+│   ├── douyin
+│   └── ssl
 ├── redis
-│      └── redis.conf
+│   └── redis.conf
 └── supervisor
     └── web.conf
+
 ```
 
 - logs        mysql日志、nginx日志、php日志、supervisor日志
